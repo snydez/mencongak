@@ -1,3 +1,10 @@
+document.addEventListener("DOMContentLoaded", function() {
+	fMulai();
+});
+
+
+function fMulai() {
+
 let soalHasil = getSoal();
 
 console.log(soalHasil);
@@ -10,22 +17,40 @@ document.getElementById("btnCheck").onclick  = function(){
 	let inputan = document.getElementById("intInputan").value;
   	fCheck(inputan, soalHasil.hasil);
   }
+  
+document.getElementById("intInputan").addEventListener('keypress',function onEvent(event) {
+    if (event.key === "Enter") {
+        document.getElementById("btnCheck").click();
+    }
 
 
+})
 
+}
 
 function fCheck(inputan, hasil) {
 
 
-
-  var strInputan = document.getElementById("intInputan").value;
-  
+  var elInputan = document.getElementById("intInputan");
+  var strInputan = elInputan.value;
+  var elHasilcheck = document.getElementById("hasilcheck");
+   
   if (strInputan == hasil) {
-	document.getElementById("hasilcheck").innerHTML = "BENAR!";
-	  timedRefresh(2000);
+	elHasilcheck.innerHTML = "BENAR!";
+//        timedRefresh(2000);
+        sleep(2000)
+           .then(() =>         fMulai())
+           .then(() => elInputan.value= "")
+           .then(() => elHasilcheck.innerHTML = "");	
 	
   } else{  
-	document.getElementById("hasilcheck").innerHTML = "SALAH!";
+	elHasilcheck.innerHTML = "SALAH!";
+	elInputan.style.backgroundColor = "pink";
+        sleep(2000)
+	   .then(() => elInputan.style.backgroundColor = "white")
+	   .then(() => elInputan.value= "")
+           .then(() => elHasilcheck.innerHTML = "");	
+	
   }
   
 
@@ -155,4 +180,8 @@ function timedRefresh(timeoutPeriod) {
 	setTimeout("location.reload(true);",timeoutPeriod);
 }
  
+ 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
